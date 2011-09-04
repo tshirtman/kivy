@@ -113,6 +113,10 @@ cdef class Bezier(VertexInstruction):
         self.batch.set_mode('line_strip')
 
     cdef void build(self):
+        # sanity check
+        if len(self.points) < 4 or len(self.points) % 2 != 0:
+            return
+
         cdef int x, i, j
         cdef float l
         cdef list T = self.points
