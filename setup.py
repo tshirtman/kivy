@@ -384,6 +384,7 @@ def determine_sdl():
             '-framework', 'ApplicationServices']
     return flags
 
+
 def determine_sdl2():
     flags = {}
     if not c_options['use_sdl2']:
@@ -416,6 +417,7 @@ def determine_sdl2():
         return {}
 
     return flags
+
 
 def determine_graphics_pxd():
     flags = {'depends': [join(dirname(__file__), 'kivy', x) for x in [
@@ -531,6 +533,8 @@ if c_options['use_sdl2']:
         sources['core/image/_img_sdl2.pyx'] = merge(
             base_flags, gl_flags, sdl2_flags)
         sources['core/text/_text_sdl2.pyx'] = merge(
+            base_flags, gl_flags, sdl2_flags)
+        sources['core/clipboard/_clipboard_sdl2.pyx'] = merge(
             base_flags, gl_flags, sdl2_flags)
 
 if platform in ('darwin', 'ios'):
