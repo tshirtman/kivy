@@ -126,5 +126,7 @@ elif _platform in ('macosx', 'linux', 'win'):
 _clipboards.append(
     ('dummy', 'clipboard_dummy', 'ClipboardDummy'))
 
+Clipboard = core_select_lib('clipboard', _clipboards, True)
+
 del _clipboards
 del _platform

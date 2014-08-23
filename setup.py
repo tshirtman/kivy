@@ -14,6 +14,7 @@ from distutils.extension import Extension
 from collections import OrderedDict
 
 if sys.version > '3':
+
     PY3 = True
 else:
     PY3 = False
@@ -62,18 +63,18 @@ if exists('/opt/vc/include/bcm_host.h'):
 # -----------------------------------------------------------------------------
 # Detect options
 #
-c_options = {
-    'use_rpi': platform == 'rpi',
-    'use_opengl_es2': True,
-    'use_opengl_debug': False,
-    'use_glew': False,
-    'use_sdl': False,
-    'use_sdl2': False,
-    'use_ios': False,
-    'use_mesagl': False,
-    'use_x11': False,
-    'use_gstreamer': False
-    'use_avfoundation': platform == 'darwin'}
+c_options = OrderedDict()
+c_options['use_rpi'] = platform == 'rpi'
+c_options['use_opengl_es2'] = None
+c_options['use_opengl_debug'] = False
+c_options['use_glew'] = False
+c_options['use_sdl'] = False
+c_options['use_sdl2'] = False
+c_options['use_ios'] = False
+c_options['use_mesagl'] = False
+c_options['use_x11'] = False
+c_options['use_gstreamer'] = False
+c_options['use_avfoundation'] = platform == 'darwin'
 
 # now check if environ is changing the default values
 for key in list(c_options.keys()):
@@ -392,6 +393,7 @@ def determine_sdl2():
 
     flags['libraries'] = ['SDL2', 'SDL2_ttf', 'SDL2_image', 'SDL2_mixer']
     flags['include_dirs'] = ['/usr/local/include/SDL2', '/usr/include/SDL2']
+
     flags['extra_link_args'] = []
     flags['extra_compile_args'] = []
     flags['extra_link_args'] += ['-L/usr/local/lib/']
@@ -418,23 +420,6 @@ def determine_sdl2():
 
     return flags
 
-
-def determine_graphics_pxd():
-    flags = {'depends': [join(dirname(__file__), 'kivy', x) for x in [
-        'graphics/buffer.pxd',
-        'graphics/c_opengl.pxd',
-        'graphics/c_opengl_debug.pxd',
-        'graphics/compiler.pxd',
-        'graphics/context_instructions.pxd',
-        'graphics/fbo.pxd',
-        'graphics/instructions.pxd',
-        'graphics/opengl_utils.pxd',
-        'graphics/shader.pxd',
-        'graphics/texture.pxd',
-        'graphics/transformation.pxd',
-        'graphics/vbo.pxd',
-        'graphics/vertex.pxd']]}
-    return flags
 
 base_flags = determine_base_flags()
 gl_flags = determine_gl_flags()

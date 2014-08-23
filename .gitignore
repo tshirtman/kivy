@@ -55,3 +55,11 @@ venv
 kivy/core/image/_img_sdl2.c
 kivy/core/text/_text_sdl2.c
 kivy/core/window/_window_sdl2.c
+
+# PyDev
+.project
+.pydevproject
+
+# Virtualenv
+venv
+

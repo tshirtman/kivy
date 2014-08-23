@@ -141,7 +141,7 @@ but swallow the event if it has been handled. For example:
 
     class MyWidget(Widget):
         def on_touch_down(self, touch):
-            if <some_condition>:
+            If <some_condition>:
                 # Do stuff here and kill the event
                 return True
             else:
@@ -219,7 +219,7 @@ class Widget(WidgetBase):
         Adding a `__del__` method to a class derived from Widget with python
         prior to 3.4 will disable automatic garbage collection for instances
         of that class. This is because the Widget class creates reference
-        cycles, thereby `preventing garbage collection 
+        cycles, thereby `preventing garbage collection
         <https://docs.python.org/2/library/gc.html#gc.garbage>`_.
 
     .. versionchanged:: 1.0.9
@@ -410,7 +410,7 @@ class Widget(WidgetBase):
                 Index to insert the widget in the list
 
                 .. versionadded:: 1.0.5
-            
+
     .. code-block:: python
 
         >>> from kivy.uix.button import Button
@@ -468,6 +468,8 @@ class Widget(WidgetBase):
             `widget`: :class:`Widget`
                 Widget to remove from our children list.
     
+    .. code-block:: python
+
     .. code-block:: python
 
         >>> from kivy.uix.button import Button
@@ -709,7 +711,7 @@ class Widget(WidgetBase):
                 Widget
 
         walking this tree:
-        
+
         .. code-block:: python
 
             >>> # Call walk on box with loopback True
@@ -1076,7 +1078,7 @@ class Widget(WidgetBase):
     '''Indicates whether this widget can interact with input or not.
 
     .. note::
-    
+
       1. Child Widgets, when added to a disabled widget, will be disabled
          automatically.
       2. Disabling/enabling a parent disables/enables all
