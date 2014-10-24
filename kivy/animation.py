@@ -422,9 +422,6 @@ class Sequence(Animation):
     def on_anim1_complete(self, instance, widget):
         self.anim2.start(widget)
 
-    def on_anim1_progress(self, instance, widget, progress):
-        self.dispatch('on_progress', widget, progress / 2.)
-
     def on_anim2_complete(self, instance, widget):
         '''Repeating logic used with boolean variable "repeat".
 
@@ -435,8 +432,18 @@ class Sequence(Animation):
         else:
             self.dispatch('on_complete', widget)
 
+    def on_anim1_progress(self, instance, widget, progress):
+        self.dispatch(
+            'on_progress',
+            widget,
+            progress * self.anim1.duration / self.duration)
+
     def on_anim2_progress(self, instance, widget, progress):
-        self.dispatch('on_progress', widget, .5 + progress / 2.)
+        self.dispatch(
+            'on_progress',
+            widget,
+            (self.anim1.duration + progress * self.anim2.duration) /
+            self.duration)
 
 
 class Parallel(Animation):
