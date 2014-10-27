@@ -139,8 +139,8 @@ return the root widget defined in your kv file/string. They will also add any
 class and template definitions to the :class:`~kivy.factory.Factory` for later
 usage.
 
-Value Expressions, on_property Expressions, and Reserved Keywords
------------------------------------------------------------------
+Value Expressions, on_property Expressions, ids and Reserved Keywords
+---------------------------------------------------------------------
 
 When you specify a property's value, the value is evaluated as a Python
 expression. This expression can be static or dynamic, which means that
@@ -156,7 +156,7 @@ the value can use the values of other properties using reserved keywords.
         This keyword is available only in rule definitions and represents the
         root widget of the rule (the first instance of the rule)::
 
-            <Widget>:
+            <MyWidget>:
                 custom: 'Hello world'
                 Button:
                     text: root.custom
@@ -175,10 +175,12 @@ the value can use the values of other properties using reserved keywords.
             TextInput:
                 on_focus: self.insert_text("Focus" if args[1] else "No focus")
 
-Furthermore, if a class definition contains an id, you can use it as a
-keyword::
+ids
+~~~
 
-    <Widget>:
+Class definitions may contain ids which can be used as a keywords:::
+
+    <MyWidget>:
         Button:
             id: btn1
         Button:
@@ -188,6 +190,22 @@ Please note that the `id` will not be available in the widget instance:
 it is used exclusively for external references. `id` is a weakref to the
 widget, and not the widget itself. The widget itself can be accessed
 with `id.__self__` (`btn1.__self__` in this case).
+
+When the kv file is processed, weakrefs to all the widgets tagged with ids are
+added to the root widgets `ids` dictionary. In other words, following on from
+the example above, the buttons state could also be accessed as follows:
+
+.. code-block:: python
+
+    widget = MyWidget()
+    state = widget.ids["btn1"].state
+
+    # Or, as an alternative syntax,
+    state = widget.ids.btn1.state
+
+Note that the outermost widget applies the kv rules to all its inner widgets
+before any other rules are applied. This means if an inner widget contains ids,
+these ids may not be available during the inner widget's `__init__` function.
 
 Valid expressons
 ~~~~~~~~~~~~~~~~
@@ -215,7 +233,7 @@ Examples of valid statements are:
     on_state:
         if self.state == 'normal': print('normal')
         else: print('down')
-        if self.state == 'normal': \
+        if self.state == 'normal': \\
         print('multiline normal')
         for i in range(10): print(i)
         print([1,2,3,4,
@@ -375,7 +393,7 @@ automatically created as an :class:`~kivy.properties.ObjectProperty`
     external binding), then the value will be used as default value of the
     property, and the type of the value will be used for the specialization of
     the Property class. In other terms: if you declare `hello: "world"`, a new
-    :class:`~kivy.properties.StringProperty` will be instanciated, with the
+    :class:`~kivy.properties.StringProperty` will be instantiated, with the
     default value `"world"`. Lists, tuples, dictionaries and strings are
     supported.
 
@@ -460,7 +478,7 @@ filename and a title:
         Label:
             text: ctx.title
 
-Then in Python, you can instanciate the template using:
+Then in Python, you can instantiate the template using:
 
 .. code-block:: python
 
@@ -555,24 +573,25 @@ When you are creating a context:
 
     #. you cannot use references other than "root":
 
-    .. code-block:: kv
+        .. code-block:: kv
 
-        <MyRule>:
-            Widget:
-                id: mywidget
-                value: 'bleh'
-            Template:
-                ctxkey: mywidget.value # << fail, this reference mywidget id
+            <MyRule>:
+                Widget:
+                    id: mywidget
+                    value: 'bleh'
+                Template:
+                    ctxkey: mywidget.value # << fail, this references the id
+                    # mywidget
 
     #. not all of the dynamic parts will be understood:
 
-    .. code-block:: kv
+        .. code-block:: kv
 
-        <MyRule>:
-            Template:
-                ctxkey: 'value 1' if root.prop1 else 'value2' # << even if
-                # root.prop1 is a property, the context will not update the
-                # context
+            <MyRule>:
+                Template:
+                    ctxkey: 'value 1' if root.prop1 else 'value2' # << even if
+                    # root.prop1 is a property, if it changes value, ctxkey
+                    # will not be updated
 
 Redefining a widget's style
 ---------------------------
@@ -1821,7 +1840,7 @@ class BuilderBase(object):
         BuilderBase._match_cache = {}
 
     def _apply_rule(self, widget, rule, rootrule, template_ctx=None):
-        # widget: the current instanciated widget
+        # widget: the current instantiated widget
         # rule: the current rule
         # rootrule: the current root rule (for children of a rule)
 
