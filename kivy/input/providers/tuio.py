@@ -166,7 +166,7 @@ class TuioMotionEventProvider(MotionEventProvider):
         command = args[0]
 
         # verify commands
-        if command not in ['alive', 'set']:
+        if command not in ('alive', 'set'):
             return
 
         # move or create a new touch
