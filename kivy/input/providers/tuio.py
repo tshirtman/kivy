@@ -147,9 +147,10 @@ class TuioMotionEventProvider(MotionEventProvider):
         osc.readQueue(self.oscid)
 
         # read the Queue with event
+        q = self.tuio_event_q
         while True:
             try:
-                value = self.tuio_event_q.pop()
+                value = q.pop()
             except IndexError:
                 # queue is empty, we're done for now
                 return
