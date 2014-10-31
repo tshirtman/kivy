@@ -187,13 +187,12 @@ class TuioMotionEventProvider(MotionEventProvider):
         # alive event, check for deleted touch
         if command == 'alive':
             alives = args[1:]
-            to_delete = []
+            to_delete = set()
             for id in self.touches[oscpath]:
-                if not id in alives:
+                if id not in alives:
                     # touch up
                     touch = self.touches[oscpath][id]
-                    if not touch in to_delete:
-                        to_delete.append(touch)
+                    to_delete.add(touch)
 
             for touch in to_delete:
                 dispatch_fn('end', touch)
