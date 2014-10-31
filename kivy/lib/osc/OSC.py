@@ -159,7 +159,7 @@ def OSCBlob(next):
     """Convert a string into an OSC Blob,
     returning a (typetag, data) tuple."""
 
-    if type(next) == type(""):
+    if isinstance(next, str):
         length = len(next)
         padded = math.ceil((len(next)) / 4.0) * 4
         binary = struct.pack(">i%ds" % (padded), length, next)
@@ -176,15 +176,15 @@ def OSCArgument(next):
     OSC binary representations, returning a
     (typetag, data) tuple."""
 
-    if type(next) == type(""):
+    if isinstance(next, basestring):
         OSCstringLength = math.ceil((len(next)+1) / 4.0) * 4
         binary  = struct.pack(">%ds" % (OSCstringLength), next)
         tag = "s"
-    elif type(next) == type(42.5):
-        binary  = struct.pack(">f", next)
+    elif isinstance(next, float):
+        binary = struct.pack(">f", next)
         tag = "f"
-    elif type(next) == type(13):
-        binary  = struct.pack(">i", next)
+    elif isinstance(next, int):
+        binary = struct.pack(">i", next)
         tag = "i"
     else:
         binary  = ""
@@ -264,11 +264,11 @@ class CallbackManager:
 
     def dispatch(self, message, source = None):
         """Sends decoded OSC data to an appropriate calback"""
-        if type(message[0]) == list :
+        if isinstance(message[0], (list, tuple)):
             # smells like nested messages
             for msg in message :
                 self.dispatch(msg, source)
-        elif type(message[0]) == str :
+        elif isinstance(message[0], basestring):
             # got a single message
             try:
                 address = message[0]
