@@ -40,6 +40,7 @@ classname before you re-assign it::
 
 __all__ = ('Factory', 'FactoryException')
 
+from importlib import import_module
 from kivy.logger import Logger
 
 
@@ -136,7 +137,7 @@ class FactoryBase(object):
         # No class to return, import the module
         if cls is None:
             if item['module']:
-                module = __import__(name=item['module'], fromlist='.')
+                module = import_module(item['module'], package='.')
                 if not hasattr(module, name):
                     raise FactoryException(
                         'No class named <%s> in module <%s>' % (
